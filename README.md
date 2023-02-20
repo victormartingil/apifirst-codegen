@@ -4,66 +4,37 @@
 
 ## STEP 1
 
+**Add the following property version for openapitools in pom.xml:** </br>
+
+```
+<properties>
+    <openapitools.generator.version>6.4.0</openapitools.generator.version>
+</properties>
+```
+
 **Add the following dependencies:** </br>
 
 ```
-<!--OPENAPI GENERATOR MAVEN PLUGIN-->
-<dependency>
-    <groupId>org.openapitools</groupId>
-    <artifactId>openapi-generator-maven-plugin</artifactId>
-    <version>6.2.1</version>
-    <scope>provided</scope>
-</dependency>
-
-<!--SPRINGDOC OPENAPI-->
-<dependency>
-    <groupId>org.springdoc</groupId>
-    <artifactId>springdoc-openapi-ui</artifactId>
-    <version>1.6.13</version>
-</dependency>
-
-<!--DEPENDENCIES NEEDED FOR THE GENERATED SOURCES WITH OPENAPI TOOLS GENERATOR PLUGIN-->
-<!--JAVAX WS RS-->
-<dependency>
-    <groupId>javax.ws.rs</groupId>
-    <artifactId>javax.ws.rs-api</artifactId>
-    <version>2.1.1</version>
-</dependency>
-
-<!-- GOOGLE GSON -->
-<dependency>
-    <groupId>com.google.code.gson</groupId>
-    <artifactId>gson</artifactId>
-    <version>2.10</version>
-</dependency>
-
-<!--OKHTTP3-->
-<dependency>
-    <groupId>com.squareup.okhttp3</groupId>
-    <artifactId>okhttp</artifactId>
-    <version>4.10.0</version>
-</dependency>
-
-<!--OKHTTP3 LOGGING-->
-<dependency>
-    <groupId>com.squareup.okhttp3</groupId>
-    <artifactId>logging-interceptor</artifactId>
-    <version>4.10.0</version>
-</dependency>
-
-<!--APACHE OLTU-->
-<dependency>
-    <groupId>org.apache.oltu.oauth2</groupId>
-    <artifactId>org.apache.oltu.oauth2.client</artifactId>
-    <version>1.0.1</version>
-</dependency>
-
-<!--GSON FIRE-->
-<dependency>
-    <groupId>io.gsonfire</groupId>
-    <artifactId>gson-fire</artifactId>
-    <version>1.8.5</version>
-</dependency>
+    <!--OPENAPI GENERATOR MAVEN PLUGIN-->
+    <dependency>
+        <groupId>org.openapitools</groupId>
+        <artifactId>openapi-generator-maven-plugin</artifactId>
+        <version>${openapitools.generator.version}</version>
+        <scope>provided</scope>
+    </dependency>
+    
+    <dependency>
+        <groupId>org.openapitools</groupId>
+        <artifactId>jackson-databind-nullable</artifactId>
+        <version>0.2.4</version>
+    </dependency>
+    
+    <!--SPRINGDOC OPENAPI-->
+    <dependency>
+        <groupId>org.springdoc</groupId>
+        <artifactId>springdoc-openapi-ui</artifactId>
+        <version>1.6.13</version>
+    </dependency>
 ```
 
 ## STEP 2
@@ -77,32 +48,33 @@ Generate a file called api.yaml and place it in src/main/resources
 **Add the following plugging in your pom.xml file** </br>
 
 ```
-<plugin>
-    <groupId>org.openapitools</groupId>
-    <artifactId>openapi-generator-maven-plugin</artifactId>
-    <!-- RELEASE_VERSION -->
-    <version>6.0.0</version>
-    <!-- /RELEASE_VERSION -->
-    <executions>
-        <execution>
-            <goals>
-                <goal>generate</goal>
-            </goals>
-            <configuration>
-                <inputSpec>${project.basedir}/src/main/resources/api.yaml</inputSpec>
-                <generatorName>java</generatorName>
-                <generateApiTests>false</generateApiTests>
-                <generateModelTests>false</generateModelTests>
-                <configOptions>
-                    <sourceFolder>src/gen/java/main</sourceFolder>
-                    <oas3>true</oas3>
-                    <useSpringController>true</useSpringController>
-                    <useSpringfox>false</useSpringfox>
-                </configOptions>
-            </configuration>
-        </execution>
-    </executions>
-</plugin>
+    <!--OpenApi Codegen-->
+    <plugin>
+        <groupId>org.openapitools</groupId>
+        <artifactId>openapi-generator-maven-plugin</artifactId>
+        <version>${openapitools.generator.version}</version>
+        <executions>
+            <execution>
+                <goals>
+                    <goal>generate</goal>
+                </goals>
+                <configuration>
+                    <inputSpec>${project.basedir}/src/main/resources/api.yaml</inputSpec>
+                    <generatorName>spring</generatorName>
+                    <generateApiTests>false</generateApiTests>
+                    <generateModelTests>false</generateModelTests>
+                    <modelNameSuffix>Dto</modelNameSuffix>
+                    <configOptions>
+                        <sourceFolder>src/gen/java/main</sourceFolder>
+                        <oas3>true</oas3>
+                        <useSpringController>true</useSpringController>
+                        <useSpringfox>false</useSpringfox>
+                        <interfaceOnly>true</interfaceOnly>
+                    </configOptions>
+                </configuration>
+            </execution>
+        </executions>
+    </plugin>
 ```
 
 ## STEP 4
